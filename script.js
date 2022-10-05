@@ -1,5 +1,6 @@
 window.onload = function () {
     //Elementos da paleta
+    const colorOne = document.getElementById('colorOne');
     const colorTwo = document.getElementById('colorTwo');
     const colorTree = document.getElementById('colorTree');
     const colorFor = document.getElementById('colorFor');
@@ -46,6 +47,7 @@ function saveColor(palet) {
 
 //Carrega as cores da paleta
 function loadColor() {
+    colorOne.className = addNewClass(colorOne);
     if(localStorage.length === 0){
         let coresUsadas = ['#ff0000','#ffff00','#0000ff'];
         setColor(coresUsadas);
@@ -64,5 +66,11 @@ function adcionaQuadros() {
         quadroPixel.appendChild(elementDivs[bloc]);
     }
 }
+//Adciona classe Selected
+function addNewClass(element) {
+    let classList = element.className;
+    classList += ' selected';
 
+    return classList;
+}
 
