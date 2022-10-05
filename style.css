@@ -8,3 +8,33 @@ div:nth-child(1).color{
     width: 60px;
     height: 60px;
 }
+#pixel-board{
+    border: solid black 1px;
+    width: 210px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+#title{
+    text-align: center;
+}
+#color-palette{
+    width: 260px;
+    height: 50;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+.pixel{
+    border: solid black 1px;
+    display: inline-block;
+    background-color: white;
+    width: 40px;
+    height: 40px;
+}
+/* #button-random-color{
+    width: 260px;
+    height: 50;
+    margin-left: auto;
+    margin-right: auto;
+} */
