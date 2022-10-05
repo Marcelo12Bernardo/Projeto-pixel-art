@@ -1,6 +1,5 @@
 window.onload = function () {
     //Elementos da paleta
-    //const colorOne = document.getElementById('colorOne');
     const colorTwo = document.getElementById('colorTwo');
     const colorTree = document.getElementById('colorTree');
     const colorFor = document.getElementById('colorFor');

@@ -1,15 +1,7 @@
 div:nth-child(1).color{
     background-color: black;
 }
-div:nth-child(2).color{
-    background-color: green;
-}
-div:nth-child(3).color{
-    background-color: yellow;
-}
-div:nth-child(4){
-    background-color: red;
-}
+
 .color{
     border: solid black 1px;
     display: inline-block;
