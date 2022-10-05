@@ -1,7 +1,3 @@
-div:nth-child(1).color{
-    background-color: black;
-}
-
 .color{
     border: solid black 1px;
     display: inline-block;
@@ -32,9 +28,3 @@ div:nth-child(1).color{
     width: 40px;
     height: 40px;
 }
-/* #button-random-color{
-    width: 260px;
-    height: 50;
-    margin-left: auto;
-    margin-right: auto;
-} */

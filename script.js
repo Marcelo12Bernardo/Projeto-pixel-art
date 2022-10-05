@@ -15,12 +15,39 @@ window.onload = function () {
         setColor(paleta);
         saveColor(paleta);
     });
+
+    //Click em algum elemento da paleta
+    colorOne.addEventListener('click', function () {
+        addClass(colorOne);
+        removeClass(colorTwo);
+        removeClass(colorTree);
+        removeClass(colorFor);
+    });
+    colorTwo.addEventListener('click', function () {
+        removeClass(colorOne);
+        addClass(colorTwo);
+        removeClass(colorTree);
+        removeClass(colorFor);
+    });
+    colorTree.addEventListener('click', function () {
+        removeClass(colorOne);
+        removeClass(colorTwo);
+        addClass(colorTree);
+        removeClass(colorFor);
+    });
+    colorFor.addEventListener('click', function () {
+        removeClass(colorOne);
+        removeClass(colorTwo);
+        removeClass(colorTree);
+        addClass(colorFor);
+    });
     adcionaQuadros();
 }
 //------Funçoes--------
 
 //Seta  a cor de fundo dos elemntos
 function setColor(paletaDeCores){
+    colorOne.style.backgroundColor = "#000000";
     colorTwo.style.backgroundColor = paletaDeCores[0];
     colorTree.style.backgroundColor = paletaDeCores[1];
     colorFor.style.backgroundColor = paletaDeCores[2];
@@ -47,7 +74,7 @@ function saveColor(palet) {
 
 //Carrega as cores da paleta
 function loadColor() {
-    colorOne.className = addNewClass(colorOne);
+    addClass(colorOne);
     if(localStorage.length === 0){
         let coresUsadas = ['#ff0000','#ffff00','#0000ff'];
         setColor(coresUsadas);
@@ -65,12 +92,23 @@ function adcionaQuadros() {
         elementDivs[bloc].className = "pixel";
         quadroPixel.appendChild(elementDivs[bloc]);
     }
+    clickQuadros(elementDivs);
 }
 //Adciona classe Selected
-function addNewClass(element) {
-    let classList = element.className;
-    classList += ' selected';
-
-    return classList;
+function addClass(element) {
+    element.className = "color selected";
 }
+function removeClass(element) {
+    element.className = "color";
+}
+function clickQuadros(blocos) {
+    for(let bloc = 0;bloc < 25;bloc++){
+        blocos[bloc].addEventListener('click', function () {
+            // let paletaSelecionada = document.querySelector('.selected');
+            // let backGround = paletaSelecionada.style.backgroundColor;
+            // console.log(backGround);
 
+            blocos[bloc].style.backgroundColor = document.querySelector('.selected').style.backgroundColor;
+        });
+    }
+}
