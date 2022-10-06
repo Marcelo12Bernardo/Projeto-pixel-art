@@ -4,8 +4,11 @@ window.onload = function () {
     const colorTwo = document.getElementById('colorTwo');
     const colorTree = document.getElementById('colorTree');
     const colorFor = document.getElementById('colorFor');
+    
     //Botao
     const btnSortColor = document.querySelector('#button-random-color');
+    const btnClearColors = document.querySelector('#clear-board');
+    
     //Carrega cores
     loadColor();
 
@@ -42,6 +45,16 @@ window.onload = function () {
         addClass(colorFor);
     });
     adcionaQuadros();
+
+    btnClearColors.addEventListener('click', function () {
+        const pixeis = document.querySelectorAll('.pixel');
+
+        for(let bloc = 0;bloc < 25;bloc++){
+            pixeis[bloc].style.backgroundColor = "#ffffff";
+        }
+        
+    });
+
 }
 //------Funçoes--------
 
@@ -104,11 +117,8 @@ function removeClass(element) {
 function clickQuadros(blocos) {
     for(let bloc = 0;bloc < 25;bloc++){
         blocos[bloc].addEventListener('click', function () {
-            // let paletaSelecionada = document.querySelector('.selected');
-            // let backGround = paletaSelecionada.style.backgroundColor;
-            // console.log(backGround);
-
             blocos[bloc].style.backgroundColor = document.querySelector('.selected').style.backgroundColor;
         });
     }
 }
+
