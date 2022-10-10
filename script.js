@@ -1,64 +1,84 @@
 window.onload = function () {
-    //Elementos da paleta
-    const colorOne = document.getElementById('colorOne');
-    const colorTwo = document.getElementById('colorTwo');
-    const colorTree = document.getElementById('colorTree');
-    const colorFor = document.getElementById('colorFor');
-    
-    //Botao
-    const btnSortColor = document.querySelector('#button-random-color');
-    const btnClearColors = document.querySelector('#clear-board');
-    
-    //Carrega cores
+    //Inicia o local storege(se necessario)
+    if(localStorage.length === 0){
+        loadStorege();
+    }
+
+    //Carrega as cores da paleta
     loadColor();
 
-    // Gera cores aleatorias para a paleta // Click btn
-    btnSortColor.addEventListener('click', function () {
-        let paleta = colorRandom();
-        setColor(paleta);
-        saveColor(paleta);
-    });
-
-    //Click em algum elemento da paleta
-    colorOne.addEventListener('click', function () {
-        addClass(colorOne);
-        removeClass(colorTwo);
-        removeClass(colorTree);
-        removeClass(colorFor);
-    });
-    colorTwo.addEventListener('click', function () {
-        removeClass(colorOne);
-        addClass(colorTwo);
-        removeClass(colorTree);
-        removeClass(colorFor);
-    });
-    colorTree.addEventListener('click', function () {
-        removeClass(colorOne);
-        removeClass(colorTwo);
-        addClass(colorTree);
-        removeClass(colorFor);
-    });
-    colorFor.addEventListener('click', function () {
-        removeClass(colorOne);
-        removeClass(colorTwo);
-        removeClass(colorTree);
-        addClass(colorFor);
-    });
+    //Cria os quadros dentro do pixel-Board
     adcionaQuadros();
 
-    btnClearColors.addEventListener('click', function () {
-        const pixeis = document.querySelectorAll('.pixel');
+    //Carrega as cores dos quadros dentro do pixel-Board
+    loadQuadro();
 
-        for(let bloc = 0;bloc < 25;bloc++){
-            pixeis[bloc].style.backgroundColor = "#ffffff";
-        }
-        
-    });
+    //Ativa o click da paleta de cores
+    clickPaleta();
 
-}
-//------Funçoes--------
+    //Ativa o click dos botoes
+    clickButtuns();
+};
+    
+    //Click em algum elemento da paleta
+    function clickPaleta(){
+        //Elementos da paleta
+        const colorOne = document.getElementById('colorOne');
+        const colorTwo = document.getElementById('colorTwo');
+        const colorTree = document.getElementById('colorTree');
+        const colorFor = document.getElementById('colorFor');
 
-//Seta  a cor de fundo dos elemntos
+        colorOne.addEventListener('click', function () {
+            addClass(colorOne);
+            removeClass(colorTwo);
+            removeClass(colorTree);
+            removeClass(colorFor);
+        });
+        colorTwo.addEventListener('click', function () {
+            removeClass(colorOne);
+            addClass(colorTwo);
+            removeClass(colorTree);
+            removeClass(colorFor);
+        });
+        colorTree.addEventListener('click', function () {
+            removeClass(colorOne);
+            removeClass(colorTwo);
+            addClass(colorTree);
+            removeClass(colorFor);
+        });
+        colorFor.addEventListener('click', function () {
+            removeClass(colorOne);
+            removeClass(colorTwo);
+            removeClass(colorTree);
+            addClass(colorFor);
+        });
+    }
+    //Click em algum botao
+    function clickButtuns(){
+        //Botao
+        const btnSortColor = document.querySelector('#button-random-color');
+        const btnClearColors = document.querySelector('#clear-board');
+
+        // Gera cores aleatorias para a paleta
+        btnSortColor.addEventListener('click', function () {
+            let paleta = colorRandom();
+            setColor(paleta);
+            saveColor(paleta);
+        });
+
+        // Limpa quadro de pixeis
+        btnClearColors.addEventListener('click', function () {
+            const pixeis = document.querySelectorAll('.pixel'); ////------
+            for(let bloc = 0;bloc < 25;bloc++){
+                pixeis[bloc].style.backgroundColor = "white";
+                savePixelColor('rgb(255, 255, 255)', bloc);
+            }
+        });
+    }
+
+
+
+//Seta  a cor de fundo dos elementos da paleta
 function setColor(paletaDeCores){
     colorOne.style.backgroundColor = "#000000";
     colorTwo.style.backgroundColor = paletaDeCores[0];
@@ -88,13 +108,8 @@ function saveColor(palet) {
 //Carrega as cores da paleta
 function loadColor() {
     addClass(colorOne);
-    if(localStorage.length === 0){
-        let coresUsadas = ['#ff0000','#ffff00','#0000ff'];
-        setColor(coresUsadas);
-    }else{
-        let coresUsadas = JSON.parse(localStorage.getItem("colorPalette"))
-        setColor(coresUsadas);
-    }
+    let coresUsadas = JSON.parse(localStorage.getItem("colorPalette"));
+    setColor(coresUsadas);
 }
 //Adciona quadro com 25 pixeis
 function adcionaQuadros() {
@@ -107,6 +122,27 @@ function adcionaQuadros() {
     }
     clickQuadros(elementDivs);
 }
+//Adciona adciona click aos pixeis do quadro
+function clickQuadros(blocos) {
+    for(let bloc = 0;bloc < 25;bloc++){
+        blocos[bloc].addEventListener('click', function () {
+            let corSelecionada = document.querySelector('.selected').style.backgroundColor;
+            blocos[bloc].style.backgroundColor = corSelecionada;
+            savePixelColor(corSelecionada, bloc);
+        });
+    }
+    
+}
+//Salva a cor e a posição do pixel que foi pintado
+let pixeisSalvos = [];
+function savePixelColor(cor, pixel) {
+    let pixelColorSaved = {
+        color: cor,
+        position: pixel
+    };
+    pixeisSalvos[pixel] = pixelColorSaved;
+    localStorage.setItem('pixelBoard',JSON.stringify(pixeisSalvos));
+}
 //Adciona classe Selected
 function addClass(element) {
     element.className = "color selected";
@@ -114,11 +150,24 @@ function addClass(element) {
 function removeClass(element) {
     element.className = "color";
 }
-function clickQuadros(blocos) {
+
+function loadQuadro() {
+        const pixel = document.querySelectorAll('.pixel'); ////--------------------
+        const pixeisPintados = JSON.parse(localStorage.getItem("pixelBoard"));
+        // console.log(pixeisPintados);
+        for(let bloc = 0;bloc < 25;bloc++){
+                pixel[bloc].style.backgroundColor = pixeisPintados[bloc].color;
+               //savePixelColor('blue', bloc);
+        }
+ 
+}
+function loadStorege(){
+    //Seta cores base pra paleta
+    let coresUsadas = ['#ff0000','#ffff00','#0000ff'];
+    setColor(coresUsadas);
+    saveColor(coresUsadas);
+    //Seta os pixeis como branco
     for(let bloc = 0;bloc < 25;bloc++){
-        blocos[bloc].addEventListener('click', function () {
-            blocos[bloc].style.backgroundColor = document.querySelector('.selected').style.backgroundColor;
-        });
+       savePixelColor('white', bloc);
     }
 }
-
