@@ -170,7 +170,7 @@ function removeClass(element) {
   element.className = 'color';
 }
 function loadQuadro() {
-  const pixel = document.querySelectorAll('.pixel'); /// /--------------------
+  const pixel = document.querySelectorAll('.pixel'); 
   const pixeisPintados = JSON.parse(localStorage.getItem('pixelBoard'));
   // console.log(pixeisPintados);
   for (let bloc = 0; bloc < pixeisPintados.length; bloc++) {
