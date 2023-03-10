@@ -8,7 +8,8 @@ window.onload = function () {
     loadColor();
 
     //Cria os quadros dentro do pixel-Board
-    adcionaQuadros();
+    var quantQuadros = localStorage.getItem('board-size');
+    adcionaQuadros(quantQuadros);
 
     //Carrega as cores dos quadros dentro do pixel-Board
     loadQuadro();
@@ -58,6 +59,7 @@ window.onload = function () {
         //Botao
         const btnSortColor = document.querySelector('#button-random-color');
         const btnClearColors = document.querySelector('#clear-board');
+        const btnGenerateBoard = document.querySelector('#generate-board');
 
         // Gera cores aleatorias para a paleta
         btnSortColor.addEventListener('click', function () {
@@ -69,14 +71,31 @@ window.onload = function () {
         // Limpa quadro de pixeis
         btnClearColors.addEventListener('click', function () {
             const pixeis = document.querySelectorAll('.pixel'); ////------
-            for(let bloc = 0;bloc < 25;bloc++){
-                pixeis[bloc].style.backgroundColor = "white";
-                savePixelColor('rgb(255, 255, 255)', bloc);
+            // for(let bloc = 0;bloc < pixeis.length;bloc++){
+            //     pixeis[bloc].style.backgroundColor = "white";
+            //     savePixelColor('rgb(255, 255, 255)', bloc);
+            // }
+            pixeisBrancos(pixeis.length);
+        });
+        //-----------------PONTO DE RECPERAÇÃO -----------------
+        //Gera qudros
+        btnGenerateBoard.addEventListener('click', function () {
+            var valor = document.getElementById("board-size").value;
+            valor = valor * valor;
+            localStorage.setItem('board-size',valor)
+            //var quantQuadros = localStorage.getItem('board-size');
+            let pixeisExistentes = document.querySelectorAll('.pixel');
+            for(let cont =0; cont < pixeisExistentes.length; cont++){
+                pixeisExistentes[cont].remove();
             }
+                // pixeisSalvos = [];
+                // for(let bloc = 0;bloc < valor;bloc++){
+                //     savePixelColor('white', bloc);
+                //  }
+                pixeisBrancos(valor);
+                adcionaQuadros(valor); 
         });
     }
-
-
 
 //Seta  a cor de fundo dos elementos da paleta
 function setColor(paletaDeCores){
@@ -112,19 +131,20 @@ function loadColor() {
     setColor(coresUsadas);
 }
 //Adciona quadro com 25 pixeis
-function adcionaQuadros() {
+function adcionaQuadros(quantQuadros) {
     const quadroPixel = document.querySelector('#pixel-board');
     let elementDivs = [];
-    for(let bloc = 0;bloc < 25;bloc++){
+    for(let bloc = 0;bloc < quantQuadros;bloc++){
         elementDivs[bloc] = document.createElement('div');
         elementDivs[bloc].className = "pixel";
         quadroPixel.appendChild(elementDivs[bloc]);
     }
     clickQuadros(elementDivs);
 }
+
 //Adciona adciona click aos pixeis do quadro
 function clickQuadros(blocos) {
-    for(let bloc = 0;bloc < 25;bloc++){
+    for(let bloc = 0;bloc < blocos.length;bloc++){
         blocos[bloc].addEventListener('click', function () {
             let corSelecionada = document.querySelector('.selected').style.backgroundColor;
             blocos[bloc].style.backgroundColor = corSelecionada;
@@ -150,14 +170,13 @@ function addClass(element) {
 function removeClass(element) {
     element.className = "color";
 }
-
 function loadQuadro() {
         const pixel = document.querySelectorAll('.pixel'); ////--------------------
         const pixeisPintados = JSON.parse(localStorage.getItem("pixelBoard"));
         // console.log(pixeisPintados);
-        for(let bloc = 0;bloc < 25;bloc++){
+        for(let bloc = 0;bloc < pixeisPintados.length;bloc++){
                 pixel[bloc].style.backgroundColor = pixeisPintados[bloc].color;
-               //savePixelColor('blue', bloc);
+               
         }
  
 }
@@ -167,7 +186,14 @@ function loadStorege(){
     setColor(coresUsadas);
     saveColor(coresUsadas);
     //Seta os pixeis como branco
-    for(let bloc = 0;bloc < 25;bloc++){
-       savePixelColor('white', bloc);
-    }
+    localStorage.setItem('board-size',25);
+    pixeisBrancos(25);
+    //var quantQuadros = document.getElementById("board-size").value;
+}
+function pixeisBrancos(quantidaPixeis){
+    const pixeis = document.querySelectorAll('.pixel');
+    for(let bloc = 0;bloc < quantidaPixeis;bloc++){
+        pixeis[bloc].style.backgroundColor = "white";
+        savePixelColor('white', bloc);
+     }
 }
