@@ -1,25 +1,27 @@
-// eslint-disable-next-line max-lines-per-function
-window.onload = function () {
-  // Inicia o local storege(se necessario)
-  if (localStorage.length === 0) {
-    loadStorege();
-  }
-  // Carrega as cores da paleta
-  loadColor();
+// Adciona classe selected
+function addClass(element) {
+  element.className = 'color selected';
+}
+function removeClass(element) {
+  element.className = 'color';
+}
+// Seta  a cor de fundo dos elementos da paleta
+function setColor(paletaDeCores) {
+  colorOne.style.backgroundColor = '#000000';
+  colorTwo.style.backgroundColor = paletaDeCores[0];
+  colorTree.style.backgroundColor = paletaDeCores[1];
+  colorFor.style.backgroundColor = paletaDeCores[2];
+}
 
-  // Cria os quadros dentro do pixel-Board
-  const quantQuadros = localStorage.getItem('board-size');
-  adcionaQuadros(quantQuadros);
+// Carrega as cores da paleta
+function loadColor() {
+  const colorOne = document.getElementById('colorOne');
+  addClass(colorOne);
+  const coresUsadas = JSON.parse(localStorage.getItem('colorPalette'));
+  setColor(coresUsadas);
+}
 
-  // Carrega as cores dos quadros dentro do pixel-Board
-  loadQuadro();
 
-  // Ativa o click da paleta de cores
-  clickPaleta();
-
-  // Ativa o click dos botoes
-  clickButtuns();
-};
 
 // Click em algum elemento da paleta
 function clickPaleta() {
@@ -58,8 +60,8 @@ function clickPaleta() {
 function clickButtuns() {
   // Botao
   const btnSortColor = document.querySelector('#button-random-color');
-  const btnClearColors = document.querySelector('#clear-board');
-  const btnGenerateBoard = document.querySelector('#generate-board');
+  // const btnClearColors = document.querySelector('#clear-board');
+  // const btnGenerateBoard = document.querySelector('#generate-board');
 
   // Gera cores aleatorias para a paleta
   btnSortColor.addEventListener('click', () => {
@@ -69,41 +71,34 @@ function clickButtuns() {
   });
 
   // Limpa quadro de pixeis
-  btnClearColors.addEventListener('click', () => {
-    const pixeis = document.querySelectorAll('.pixel'); /// /------
-    // for(let bloc = 0;bloc < pixeis.length;bloc++){
-    //     pixeis[bloc].style.backgroundColor = "white";
-    //     savePixelColor('rgb(255, 255, 255)', bloc);
-    // }
-    pixeisBrancos(pixeis.length);
-  });
-  // -----------------PONTO DE RECPERAÇÃO -----------------
+  // btnClearColors.addEventListener('click', () => {
+  //   const pixeis = document.querySelectorAll('.pixel'); /// /------
+  //   // for(let bloc = 0;bloc < pixeis.length;bloc++){
+  //   //     pixeis[bloc].style.backgroundColor = "white";
+  //   //     savePixelColor('rgb(255, 255, 255)', bloc);
+  //   // }
+  //   pixeisBrancos(pixeis.length);
+  // });
   // Gera qudros
-  btnGenerateBoard.addEventListener('click', () => {
-    let valor = document.getElementById('board-size').value;
-    valor *= valor;
-    localStorage.setItem('board-size', valor);
-    // var quantQuadros = localStorage.getItem('board-size');
-    const pixeisExistentes = document.querySelectorAll('.pixel');
-    for (let cont = 0; cont < pixeisExistentes.length; cont++) {
-      pixeisExistentes[cont].remove();
-    }
-    // pixeisSalvos = [];
-    // for(let bloc = 0;bloc < valor;bloc++){
-    //     savePixelColor('white', bloc);
-    //  }
-    pixeisBrancos(valor);
-    adcionaQuadros(valor);
-  });
+  // btnGenerateBoard.addEventListener('click', () => {
+  //   let valor = document.getElementById('board-size').value;
+  //   valor *= valor;
+  //   localStorage.setItem('board-size', valor);
+  //   // var quantQuadros = localStorage.getItem('board-size');
+  //   const pixeisExistentes = document.querySelectorAll('.pixel');
+  //   for (let cont = 0; cont < pixeisExistentes.length; cont++) {
+  //     pixeisExistentes[cont].remove();
+  //   }
+  //   // pixeisSalvos = [];
+  //   // for(let bloc = 0;bloc < valor;bloc++){
+  //   //     savePixelColor('white', bloc);
+  //   //  }
+  //   pixeisBrancos(valor);
+  //   adcionaQuadros(valor);
+  // });
 }
 
-// Seta  a cor de fundo dos elementos da paleta
-function setColor(paletaDeCores) {
-  colorOne.style.backgroundColor = '#000000';
-  colorTwo.style.backgroundColor = paletaDeCores[0];
-  colorTree.style.backgroundColor = paletaDeCores[1];
-  colorFor.style.backgroundColor = paletaDeCores[2];
-}
+
 
 // Gera cores Hexa aleatorias
 function colorRandom() {
@@ -124,12 +119,6 @@ function saveColor(palet) {
   localStorage.setItem('colorPalette', JSON.stringify(palet));
 }
 
-// Carrega as cores da paleta
-function loadColor() {
-  addClass(colorOne);
-  const coresUsadas = JSON.parse(localStorage.getItem('colorPalette'));
-  setColor(coresUsadas);
-}
 // Adciona quadro com 25 pixeis
 function adcionaQuadros(quantQuadros) {
   const quadroPixel = document.querySelector('#pixel-board');
@@ -162,13 +151,7 @@ function savePixelColor(cor, pixel) {
   pixeisSalvos[pixel] = pixelColorSaved;
   localStorage.setItem('pixelBoard', JSON.stringify(pixeisSalvos));
 }
-// Adciona classe Selected
-function addClass(element) {
-  element.className = 'color selected';
-}
-function removeClass(element) {
-  element.className = 'color';
-}
+
 function loadQuadro() {
   const pixel = document.querySelectorAll('.pixel'); 
   const pixeisPintados = JSON.parse(localStorage.getItem('pixelBoard'));
@@ -177,15 +160,16 @@ function loadQuadro() {
     pixel[bloc].style.backgroundColor = pixeisPintados[bloc].color;
   }
 }
+// var quantQuadros = document.getElementById("board-size").value;
 function loadStorege() {
   // Seta cores base pra paleta
   const coresUsadas = ['#ff0000', '#ffff00', '#0000ff'];
   setColor(coresUsadas);
   saveColor(coresUsadas);
-  // Seta os pixeis como branco
+  // Seta o tamanho do quadro como 25 pixeis brancos e os coloca no pixelboard
   localStorage.setItem('board-size', 25);
+  adcionaQuadros(25);
   pixeisBrancos(25);
-  // var quantQuadros = document.getElementById("board-size").value;
 }
 function pixeisBrancos(quantidaPixeis) {
   const pixeis = document.querySelectorAll('.pixel');
@@ -194,3 +178,26 @@ function pixeisBrancos(quantidaPixeis) {
     savePixelColor('white', bloc);
   }
 }
+
+//----------------------------------MAIN-------------------
+window.onload = function () {
+  // Inicia o local storege(se necessario)
+  if (localStorage.length === 0) {
+    loadStorege();
+  }
+  // Carrega as cores da paleta
+  loadColor();
+  // Ativa o click dos botoes
+  clickButtuns();
+  
+  // Cria os quadros dentro do pixel-Board
+  // const quantQuadros = localStorage.getItem('board-size');
+  // adcionaQuadros(quantQuadros);
+
+  // Carrega as cores dos quadros dentro do pixel-Board
+  loadQuadro();
+
+  // Ativa o click da paleta de cores
+  clickPaleta();
+
+};
