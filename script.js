@@ -13,16 +13,6 @@ function setColor(paletaDeCores) {
   colorFor.style.backgroundColor = paletaDeCores[2];
 }
 
-// Carrega as cores da paleta
-function loadColor() {
-  const colorOne = document.getElementById('colorOne');
-  addClass(colorOne);
-  const coresUsadas = JSON.parse(localStorage.getItem('colorPalette'));
-  setColor(coresUsadas);
-}
-
-
-
 // Click em algum elemento da paleta
 function clickPaleta() {
   // Elementos da paleta
@@ -30,7 +20,6 @@ function clickPaleta() {
   const colorTwo = document.getElementById('colorTwo');
   const colorTree = document.getElementById('colorTree');
   const colorFor = document.getElementById('colorFor');
-
   colorOne.addEventListener('click', () => {
     addClass(colorOne);
     removeClass(colorTwo);
@@ -60,7 +49,7 @@ function clickPaleta() {
 function clickButtuns() {
   // Botao
   const btnSortColor = document.querySelector('#button-random-color');
-  // const btnClearColors = document.querySelector('#clear-board');
+  const btnClearColors = document.querySelector('#clear-board');
   // const btnGenerateBoard = document.querySelector('#generate-board');
 
   // Gera cores aleatorias para a paleta
@@ -71,14 +60,10 @@ function clickButtuns() {
   });
 
   // Limpa quadro de pixeis
-  // btnClearColors.addEventListener('click', () => {
-  //   const pixeis = document.querySelectorAll('.pixel'); /// /------
-  //   // for(let bloc = 0;bloc < pixeis.length;bloc++){
-  //   //     pixeis[bloc].style.backgroundColor = "white";
-  //   //     savePixelColor('rgb(255, 255, 255)', bloc);
-  //   // }
-  //   pixeisBrancos(pixeis.length);
-  // });
+  btnClearColors.addEventListener('click', () => {
+    const pixeis = document.querySelectorAll('.pixel'); 
+    pixeisBrancos(pixeis.length);
+  });
   // Gera qudros
   // btnGenerateBoard.addEventListener('click', () => {
   //   let valor = document.getElementById('board-size').value;
@@ -144,60 +129,64 @@ function clickQuadros(blocos) {
 // Salva a cor e a posição do pixel que foi pintado
 const pixeisSalvos = [];
 function savePixelColor(cor, pixel) {
+  const pixelBoard = JSON.parse(localStorage.getItem('pixelBoard'));
   const pixelColorSaved = {
     color: cor,
     position: pixel,
   };
-  pixeisSalvos[pixel] = pixelColorSaved;
-  localStorage.setItem('pixelBoard', JSON.stringify(pixeisSalvos));
+  pixelBoard[pixel] = pixelColorSaved;
+  localStorage.setItem('pixelBoard', JSON.stringify(pixelBoard));
 }
 
 function loadQuadro() {
-  const pixel = document.querySelectorAll('.pixel'); 
+  const pixeis = document.querySelectorAll('.pixel');
   const pixeisPintados = JSON.parse(localStorage.getItem('pixelBoard'));
-  // console.log(pixeisPintados);
   for (let bloc = 0; bloc < pixeisPintados.length; bloc++) {
-    pixel[bloc].style.backgroundColor = pixeisPintados[bloc].color;
+    pixeis[bloc].style.backgroundColor = pixeisPintados[bloc].color;
   }
 }
 // var quantQuadros = document.getElementById("board-size").value;
-function loadStorege() {
-  // Seta cores base pra paleta
+function setValueDefault() {
   const coresUsadas = ['#ff0000', '#ffff00', '#0000ff'];
   setColor(coresUsadas);
   saveColor(coresUsadas);
+
   // Seta o tamanho do quadro como 25 pixeis brancos e os coloca no pixelboard
   localStorage.setItem('board-size', 25);
   adcionaQuadros(25);
   pixeisBrancos(25);
+
 }
+
 function pixeisBrancos(quantidaPixeis) {
   const pixeis = document.querySelectorAll('.pixel');
+  localStorage.setItem('pixelBoard', JSON.stringify([]));
   for (let bloc = 0; bloc < quantidaPixeis; bloc++) {
     pixeis[bloc].style.backgroundColor = 'white';
     savePixelColor('white', bloc);
   }
 }
 
-//----------------------------------MAIN-------------------
+
 window.onload = function () {
-  // Inicia o local storege(se necessario)
+ 
   if (localStorage.length === 0) {
-    loadStorege();
+    setValueDefault();
+    addClass(colorOne);
+  } else {
+    // Carrega as cores da paleta
+    const paleta = JSON.parse(localStorage.getItem('colorPalette'));
+    setColor(paleta);
+    addClass(colorOne);
+    // Carrega as cores dos quadros dentro do pixel-Board
+    const contPixeis = JSON.parse(localStorage.getItem('board-size'));
+    adcionaQuadros(contPixeis);
+    loadQuadro();
   }
-  // Carrega as cores da paleta
-  loadColor();
-  // Ativa o click dos botoes
-  clickButtuns();
-  
-  // Cria os quadros dentro do pixel-Board
-  // const quantQuadros = localStorage.getItem('board-size');
-  // adcionaQuadros(quantQuadros);
-
-  // Carrega as cores dos quadros dentro do pixel-Board
-  loadQuadro();
-
-  // Ativa o click da paleta de cores
   clickPaleta();
+  clickButtuns();
+// // Cria os quadros dentro do pixel-Board
+//   // const quantQuadros = localStorage.getItem('board-size');
+//   // adcionaQuadros(quantQuadros);
 
 };
