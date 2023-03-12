@@ -50,7 +50,7 @@ function clickButtuns() {
   // Botao
   const btnSortColor = document.querySelector('#button-random-color');
   const btnClearColors = document.querySelector('#clear-board');
-  // const btnGenerateBoard = document.querySelector('#generate-board');
+  const btnGenerateBoard = document.querySelector('#generate-board');
 
   // Gera cores aleatorias para a paleta
   btnSortColor.addEventListener('click', () => {
@@ -64,23 +64,13 @@ function clickButtuns() {
     const pixeis = document.querySelectorAll('.pixel'); 
     pixeisBrancos(pixeis.length);
   });
-  // Gera qudros
-  // btnGenerateBoard.addEventListener('click', () => {
-  //   let valor = document.getElementById('board-size').value;
-  //   valor *= valor;
-  //   localStorage.setItem('board-size', valor);
-  //   // var quantQuadros = localStorage.getItem('board-size');
-  //   const pixeisExistentes = document.querySelectorAll('.pixel');
-  //   for (let cont = 0; cont < pixeisExistentes.length; cont++) {
-  //     pixeisExistentes[cont].remove();
-  //   }
-  //   // pixeisSalvos = [];
-  //   // for(let bloc = 0;bloc < valor;bloc++){
-  //   //     savePixelColor('white', bloc);
-  //   //  }
-  //   pixeisBrancos(valor);
-  //   adcionaQuadros(valor);
-  // });
+  btnGenerateBoard.addEventListener('click', () => {
+    let valor = document.getElementById('board-size').value;
+    localStorage.setItem('board-size', valor);
+    adcionaQuadros(valor);
+    pixeisBrancos(valor);
+    window.location.reload(true);
+  });
 }
 
 
